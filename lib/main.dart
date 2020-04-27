@@ -25,14 +25,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  var animatedButtonDuratuon = Duration(milliseconds: 500);
+  var animateButton = false;
+  
   @override
   Widget build(BuildContext context) {
 
@@ -40,22 +36,38 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          AnimatedPositioned(
+            duration: animatedButtonDuratuon,
+            bottom: 16,
+            height: 50,
+            right: animateButton ? 120 : 16,
+            child: FloatingActionButton(child: Icon(Icons.play_arrow), onPressed: () {})  
+          ),
+           AnimatedPositioned(
+             height: 50,
+             bottom:  animateButton ? 90 : 16,
+             right:  animateButton ? 90 : 16,
+            duration: animatedButtonDuratuon,
+            child: FloatingActionButton(child: Icon(Icons.pause), onPressed: () {})  
+          ),
+           AnimatedPositioned(
+            duration: animatedButtonDuratuon,
+            height: 50,
+            bottom: animateButton ? 120 : 16,
+            right: 16,
+            child: FloatingActionButton(child: Icon(Icons.stop), onPressed: () {})  
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () { 
+          setState(() {
+            animateButton = !animateButton;           
+          });
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
